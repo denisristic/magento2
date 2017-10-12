@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!--
 /**
- * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 -->
@@ -13,6 +13,15 @@
                 <item name="scope_id" xsi:type="number">1</item>
                 <item name="label" xsi:type="string">6</item>
                 <item name="value" xsi:type="number">6</item>
+            </field>
+        </dataset>
+
+        <dataset name="captcha_admin_disable">
+            <field name="admin/captcha/enable" xsi:type="array">
+                <item name="scope" xsi:type="string">admin</item>
+                <item name="scope_id" xsi:type="number">1</item>
+                <item name="label" xsi:type="string">No</item>
+                <item name="value" xsi:type="number">0</item>
             </field>
         </dataset>
 

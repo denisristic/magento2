@@ -1,15 +1,12 @@
 <?php
 /**
- * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Indexer\Product\Flat;
 
 use Magento\Catalog\Model\Indexer\Product\Flat\Table\BuilderInterfaceFactory;
 
-/**
- * Class TableBuilder
- */
 class TableBuilder
 {
     /**
@@ -38,23 +35,22 @@ class TableBuilder
     private $tableBuilderFactory;
 
     /**
-     * Check whether builder was executed
+     * Constructor
      *
-     * @var bool
-     */
-    protected $_isExecuted = false;
-
-    /**
      * @param \Magento\Catalog\Helper\Product\Flat\Indexer $productIndexerHelper
      * @param \Magento\Framework\App\ResourceConnection $resource
+     * @param BuilderInterfaceFactory|null $tableBuilderFactory
      */
     public function __construct(
         \Magento\Catalog\Helper\Product\Flat\Indexer $productIndexerHelper,
-        \Magento\Framework\App\ResourceConnection $resource
+        \Magento\Framework\App\ResourceConnection $resource,
+        BuilderInterfaceFactory $tableBuilderFactory = null
     ) {
         $this->_productIndexerHelper = $productIndexerHelper;
         $this->resource = $resource;
         $this->_connection = $resource->getConnection();
+        $this->tableBuilderFactory = $tableBuilderFactory ?: \Magento\Framework\App\ObjectManager::getInstance()
+            ->get(BuilderInterfaceFactory::class);
     }
 
     /**
@@ -67,9 +63,6 @@ class TableBuilder
      */
     public function build($storeId, $changedIds, $valueFieldSuffix)
     {
-        if ($this->_isExecuted) {
-            return;
-        }
         $entityTableName = $this->_productIndexerHelper->getTable('catalog_product_entity');
         $attributes = $this->_productIndexerHelper->getAttributes();
         $eavAttributes = $this->_productIndexerHelper->getTablesStructure($attributes);
@@ -114,7 +107,6 @@ class TableBuilder
             //Fill temporary tables with attributes grouped by it type
             $this->_fillTemporaryTable($tableName, $columns, $changedIds, $valueFieldSuffix, $storeId);
         }
-        $this->_isExecuted = true;
     }
 
     /**
@@ -131,13 +123,13 @@ class TableBuilder
         $valueTables = [];
         if (!empty($columns)) {
             $valueTableName = $tableName . $valueFieldSuffix;
-            $temporaryTableBuilder = $this->getTableBuilderFactory()->create(
+            $temporaryTableBuilder = $this->tableBuilderFactory->create(
                 [
                     'connection' => $this->_connection,
                     'tableName' => $tableName
                 ]
             );
-            $valueTemporaryTableBuilder = $this->getTableBuilderFactory()->create(
+            $valueTemporaryTableBuilder = $this->tableBuilderFactory->create(
                 [
                     'connection' => $this->_connection,
                     'tableName' => $valueTableName
@@ -353,20 +345,8 @@ class TableBuilder
     }
 
     /**
-     * @return BuilderInterfaceFactory
-     */
-    private function getTableBuilderFactory()
-    {
-        if (null === $this->tableBuilderFactory) {
-            $this->tableBuilderFactory = \Magento\Framework\App\ObjectManager::getInstance()
-                ->get(BuilderInterfaceFactory::class);
-        }
-
-        return $this->tableBuilderFactory;
-    }
-
-    /**
      * @return \Magento\Framework\EntityManager\MetadataPool
+     * @deprecated 101.1.0
      */
     private function getMetadataPool()
     {

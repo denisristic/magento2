@@ -1,8 +1,11 @@
 /**
- * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 
+/**
+ * @api
+ */
 define([
     'underscore',
     './dynamic-rows'
@@ -211,7 +214,7 @@ define([
                     return false;
                 }
 
-                changes.each(function (changedObject) {
+                changes.forEach(function (changedObject) {
                     this.mappingValue(changedObject);
                 }, this);
             }
@@ -263,7 +266,7 @@ define([
                 changes = [],
                 obj = {};
 
-            max.each(function (record, index) {
+            max.forEach(function (record, index) {
                 obj[this.map[this.identificationDRProperty]] = record[this.map[this.identificationDRProperty]];
 
                 if (!_.where(this.cacheGridData, obj).length) {

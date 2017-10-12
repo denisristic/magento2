@@ -1,8 +1,11 @@
 /**
- * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 
+/**
+ * @api
+ */
 define([
     'jquery',
     'underscore',
@@ -280,7 +283,7 @@ define([
             this.submitBtn.disabled = isEmpty(value);
 
             if (value.length >= parseInt(this.options.minSearchLength, 10)) {
-                $.get(this.options.url, {
+                $.getJSON(this.options.url, {
                     q: value
                 }, $.proxy(function (data) {
                     $.each(data, function (index, element) {

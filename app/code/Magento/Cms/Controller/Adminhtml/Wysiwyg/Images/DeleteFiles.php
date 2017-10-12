@@ -1,7 +1,6 @@
 <?php
 /**
- *
- * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Cms\Controller\Adminhtml\Wysiwyg\Images;
@@ -21,6 +20,8 @@ class DeleteFiles extends \Magento\Cms\Controller\Adminhtml\Wysiwyg\Images
     protected $resultRawFactory;
 
     /**
+     * Constructor
+     *
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\Registry $coreRegistry
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
@@ -58,7 +59,7 @@ class DeleteFiles extends \Magento\Cms\Controller\Adminhtml\Wysiwyg\Images
                 /** @var \Magento\Framework\Filesystem $filesystem */
                 $filesystem = $this->_objectManager->get(\Magento\Framework\Filesystem::class);
                 $dir = $filesystem->getDirectoryRead(DirectoryList::MEDIA);
-                $filePath = $path . '/' . $file;
+                $filePath = $path . '/' . \Magento\Framework\File\Uploader::getCorrectFileName($file);
                 if ($dir->isFile($dir->getRelativePath($filePath))) {
                     $this->getStorage()->deleteFile($filePath);
                 }

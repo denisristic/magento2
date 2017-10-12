@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -8,6 +8,13 @@
 
 namespace Magento\Shipping\Model;
 
+use Magento\Shipping\Model\Carrier\AbstractCarrierInterface;
+
+/**
+ * Class Config
+ * @api
+ * @since 100.0.2
+ */
 class Config extends \Magento\Framework\DataObject
 {
     /**
@@ -54,7 +61,7 @@ class Config extends \Magento\Framework\DataObject
      * Retrieve active system carriers
      *
      * @param   mixed $store
-     * @return  array
+     * @return  AbstractCarrierInterface[]
      */
     public function getActiveCarriers($store = null)
     {
@@ -75,7 +82,7 @@ class Config extends \Magento\Framework\DataObject
      * Retrieve all system carriers
      *
      * @param   mixed $store
-     * @return  array
+     * @return  AbstractCarrierInterface[]
      */
     public function getAllCarriers($store = null)
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Model\Service;
@@ -87,7 +87,8 @@ class OrderService implements OrderManagementInterface
     public function cancel($id)
     {
         $order = $this->orderRepository->get($id);
-        if ((bool)$order->cancel()) {
+        if ($order->canCancel()) {
+            $order->cancel();
             $this->orderRepository->save($order);
             return true;
         }

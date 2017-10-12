@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -8,7 +8,10 @@ namespace Magento\Framework\Exception;
 
 use Magento\Framework\Phrase;
 
-abstract class AbstractAggregateException extends LocalizedException
+/**
+ * @api
+ */
+abstract class AbstractAggregateException extends LocalizedException implements AggregateExceptionInterface
 {
     /**
      * The array of errors that have been added via the addError() method
@@ -36,11 +39,12 @@ abstract class AbstractAggregateException extends LocalizedException
      *
      * @param \Magento\Framework\Phrase $phrase
      * @param \Exception $cause
+     * @param int $code
      */
-    public function __construct(Phrase $phrase, \Exception $cause = null)
+    public function __construct(Phrase $phrase, \Exception $cause = null, $code = 0)
     {
         $this->originalPhrase = $phrase;
-        parent::__construct($phrase, $cause);
+        parent::__construct($phrase, $cause, $code);
     }
 
     /**
@@ -85,9 +89,7 @@ abstract class AbstractAggregateException extends LocalizedException
     }
 
     /**
-     * Get the array of LocalizedException objects. Get an empty array if no errors were added.
-     *
-     * @return \Magento\Framework\Exception\LocalizedException[]
+     * @inheritdoc
      */
     public function getErrors()
     {

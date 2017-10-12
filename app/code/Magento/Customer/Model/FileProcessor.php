@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Model;
@@ -181,6 +181,7 @@ class FileProcessor
         );
 
         $result = $uploader->save($path);
+        unset($result['path']);
         if (!$result) {
             throw new \Magento\Framework\Exception\LocalizedException(
                 __('File can not be saved to the destination folder.')
